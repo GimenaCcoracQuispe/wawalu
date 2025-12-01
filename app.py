@@ -31,9 +31,9 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Configuración de la base de datos
-DB_HOST = os.getenv('DB_HOST', 'aws.c506266wsgbx.us-east-1.rds.amazonaws.com')
+DB_HOST = os.getenv('DB_HOST', 'dbwawalu.cll2q0yyxbgz.us-east-1.rds.amazonaws.com')
 DB_USER = os.getenv('DB_USER', 'root')
-DB_PASSWORD = os.getenv('DB_PASSWORD', 'diego1416')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'keylogers')
 DB_NAME = os.getenv('DB_NAME', 'wawalu_db')
 
 def get_db_connection():

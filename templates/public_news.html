@@ -1,0 +1,139 @@
+{% extends "base.html" %} {% block title %}Noticias - Wawalu{% endblock %} {%
+block extra_css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/news.css') }}"
+/>
+{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section
+  class="news-hero flex items-center justify-center text-white text-center"
+>
+  <div class="relative z-10 px-4 reveal active">
+    <h1 class="text-5xl md:text-6xl font-bold mb-4">Noticias y Novedades</h1>
+    <p class="text-xl md:text-2xl opacity-90">
+      Mantente al día con todo lo que sucede en nuestra comunidad
+    </p>
+  </div>
+</section>
+
+<!-- News Content -->
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- Filters Bar -->
+  <div class="max-w-4xl mx-auto mb-12">
+    <div
+      class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col md:flex-row gap-4 justify-between items-center"
+    >
+      <!-- Search -->
+      <div class="relative w-full md:w-96">
+        <span
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+        >
+          <span class="material-symbols-outlined text-gray-400">search</span>
+        </span>
+        <input
+          type="text"
+          id="newsSearch"
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow"
+          placeholder="Buscar noticias..."
+        />
+      </div>
+
+      <!-- Sort -->
+      <div class="w-full md:w-auto">
+        <select
+          id="newsSort"
+          class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-lg"
+        >
+          <option value="date-new">Más Recientes</option>
+          <option value="date-old">Más Antiguas</option>
+          <option value="name-asc">Título: A-Z</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  {% if news_items %}
+  <div
+    id="newsGrid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+  >
+    {% for item in news_items %}
+    <article
+      class="news-item bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group border border-gray-100"
+      data-title="{{ item.title }}"
+      data-date="{{ item.created_at }}"
+      data-description="{{ item.content }}"
+    >
+      <!-- Image -->
+      <div class="h-56 overflow-hidden relative bg-gray-100">
+        {% if item.image_url or item.has_image %}
+        <img
+          src="{{ url_for('serve_image', table='news', id=item.id) }}"
+          alt="{{ item.title }}"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          onerror="this.src='{{ url_for('static', filename='image/default_news.png') }}'"
+        />
+        {% else %}
+        <div
+          class="w-full h-full flex items-center justify-center text-gray-300"
+        >
+          <span class="material-symbols-outlined text-6xl">newspaper</span>
+        </div>
+        {% endif %}
+
+        <div class="absolute top-4 left-4">
+          <span
+            class="bg-white/90 backdrop-blur-sm text-green-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm"
+          >
+            Novedad
+          </span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-sm text-gray-400 mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-base"
+            >calendar_today</span
+          >
+          {{ item.created_at.strftime('%d %b, %Y') }}
+        </div>
+
+        <h2
+          class="text-xl font-bold text-gray-800 mb-3 group-hover:text-green-600 transition-colors line-clamp-2"
+        >
+          {{ item.title }}
+        </h2>
+
+        <p class="text-gray-600 mb-6 line-clamp-3 flex-1">{{ item.content }}</p>
+
+        <a
+          href="{{ url_for('news_detail', news_id=item.id) }}"
+          class="inline-flex items-center text-green-600 font-bold hover:text-green-700 transition-colors group/link"
+        >
+          Leer más
+          <span
+            class="material-symbols-outlined ml-1 transition-transform group-hover/link:translate-x-1"
+            >arrow_forward</span
+          >
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-20">
+    <span class="material-symbols-outlined text-6xl text-gray-300 mb-4"
+      >newspaper</span
+    >
+    <p class="text-gray-500 text-xl">
+      No hay noticias publicadas recientemente.
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %} {% block extra_js %}
+<script src="{{ url_for('static', filename='js/filters.js') }}"></script>
+<script src="{{ url_for('static', filename='js/public_news.js') }}"></script>
+{% endblock %}

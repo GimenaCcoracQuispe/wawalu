@@ -1,0 +1,15 @@
+{% extends 'auth_base.html' %}
+{% block content %}
+<h2 class="text-xl font-bold mb-4">Gestión de Galería (Staff)</h2>
+<a href="{{ url_for('add_galery_staff') }}" class="btn mb-4">Agregar Foto</a>
+<table class="table-auto w-full">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Categoría</th>
+      <th>Imagen</th>
+      <th>Acciones</th>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
